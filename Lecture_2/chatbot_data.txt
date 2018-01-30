@@ -1,0 +1,13 @@
+Joe likes Mary.
+Bob is friends with Mary.
+Bob has a dog named Fido.
+### HERE'S SOME DATA YOU DON'T WANT
+Mary has a dog.
+Mary's dog's name is Rover.
+$$$ BAD DATA
+Bob doesn't like Joe.
+Joe is friends with Mary.
+=== A comment that shouldn't be used
+Joe has a cat.
+Joe's cat's name is Mr. Binglesworth.
+Bob and Mary are taking a trip to France in June of this year.
