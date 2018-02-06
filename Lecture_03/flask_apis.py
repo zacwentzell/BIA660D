@@ -1,8 +1,7 @@
 from flask import Flask, request
 from flask_restful import Resource, Api
-from sqlalchemy import create_engine
 from json import dumps
-from flask.ext.jsonpify import jsonify
+from flask.json import jsonify
 
 app = Flask(__name__)
 api = Api(app)
@@ -16,10 +15,13 @@ class Questions(Resource):
 class Statements(Resource):
     def post(self):
         # Here is where you would take in new data for the bot
-        return 'Data received!'
+
+        # data is available via the request variable
+        return 'Data received! \n {}'.format(request.data)
 
 
-api.add_resource(Questions, '/questions')  # Route_1
+api.add_resource(Questions, '/questions')
+api.add_resource(Statements, '/statements')
 
 if __name__ == '__main__':
-    app.run(port='5002')
+    app.run(port=5002)
