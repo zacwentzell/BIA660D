@@ -1,5 +1,5 @@
 #### Instructions to set up the environment to run the Lecture_03/information_extraction.py script:
-1) Download the zip file for the pyclausie package, unzip it (note the file's location) https://github.com/AnthonyMRios/pyclausie
+1) Download the zip file for the pyclausie repo, unzip it (note the file's location) https://github.com/AnthonyMRios/pyclausie
 2) Create a new conda environment having python 2, `conda create -n chatbot python=2`
 > Be sure to activate the environment before installing any packages (`source activate chatbot` on Mac, `activate chatbot` on Windows [use Anaconda Prompt])
 
