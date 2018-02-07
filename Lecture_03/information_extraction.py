@@ -28,6 +28,9 @@ class Person(object):
         self.has = [] if has is None else has
         self.travels = [] if travels is None else travels
 
+    def __repr__(self):
+        return self.name
+
 
 class Pet(object):
     def __init__(self, pet_type, name=None):
@@ -102,6 +105,8 @@ def get_persons_pet(person_name):
 
 def process_relation_triplet(triplet):
     """
+    Process a relation triplet found by ClausIE and store the data
+
     find relations of types:
     (PERSON, likes, PERSON)
     (PERSON, has, PET)
@@ -150,6 +155,7 @@ def process_relation_triplet(triplet):
         fw_doc = nlp(unicode(triplet.object))
         with_token = [t for t in fw_doc if t.text == 'with'][0]
         fw_who = [t for t in with_token.children if t.dep_ == 'pobj'][0].text
+        # fw_who = [e for e in fw_doc.ents if e.label_ == 'PERSON'][0].text
 
         if triplet.subject in [e.text for e in doc.ents if e.label_ == 'PERSON'] and fw_who in [e.text for e in doc.ents if e.label_ == 'PERSON']:
             s = add_person(triplet.subject)
@@ -213,7 +219,7 @@ def main():
 
     for t in triples:
         r = process_relation_triplet(t)
-        print(r)
+        # print(r)
 
     question = ' '
     while question[-1] != '?':
