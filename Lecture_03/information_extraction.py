@@ -75,9 +75,9 @@ def add_person(name):
 
 
 def select_pet(name):
-    for person in persons:
-        if person.name == name:
-            return person
+    for pet in pets:
+        if pet.name == name:
+            return pet
 
 
 def add_pet(type, name=None):
