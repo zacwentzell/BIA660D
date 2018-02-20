@@ -22,8 +22,8 @@ More info: https://mlsdev.com/blog/81-a-beginner-s-tutorial-for-understanding-re
 """ Here's how you mimic a browser in Python
 The client makes a request to a server and the server returns a response to the client.
 """
-response = requests.get('http://www.google.com')
-
+response = requests.get('http://www.google.com/')
+2+2
 
 # if you'd like to view the html that you got back in the response
 # html = response.text
@@ -68,7 +68,7 @@ payload = {'username': 'zac_bot',
            'text': "What's that smell?"
            }
 
-response = requests.post(SLACK_URL, json=payload)
+response = requests.post('https://hooks.slack.com/services/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', json=payload)
 # more info: https://api.slack.com/api_docs_message_builder.php
 
 #more APIs to play with:

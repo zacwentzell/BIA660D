@@ -208,6 +208,10 @@ def has_question_word(string):
 
     return False
 
+def answer_question():
+    answer = 'answer'
+    return answer
+
 
 
 def main():
