@@ -1,4 +1,5 @@
-from __future__ import print_function
+from __future__ import unicode_literals, print_function
+
 import re
 import spacy
 
@@ -6,6 +7,8 @@ from pyclausie import ClausIE
 
 
 nlp = spacy.load('en')
+cl = ClausIE.get_instance()
+
 re_spaces = re.compile(r'\s+')
 
 
@@ -208,41 +211,66 @@ def has_question_word(string):
 
     return False
 
-def answer_question():
-    answer = 'answer'
-    return answer
 
+def make_sentence_from_triplet(triplet):
+    return triplet.subject + ' ' + triplet.predicate + ' ' + triplet.object
 
-
-def main():
-    sents = get_data_from_file()
-
-    cl = ClausIE.get_instance()
-
-    triples = cl.extract_triples(sents)
-
-    for t in triples:
-        r = process_relation_triplet(t)
-        # print(r)
-
-    question = ' '
+def answer_question(question=' '):
     while question[-1] != '?':
         question = raw_input("Please enter your question: ")
 
         if question[-1] != '?':
             print('This is not a question... please try again')
 
+    # my question preprocesser may break things. This was just a demo.
+    # Don't think that you have to use it for all questions, or even that you have to use it at all.
+    # Don't use my code blindly. Think critically about what it is doing and whether or not that's what you want.
     q_trip = cl.extract_triples([preprocess_question(question)])[0]
 
-    # (WHO, has, PET)
+    triplet_sentence = make_sentence_from_triplet(q_trip) + '?'
+    doc = nlp(triplet_sentence)
+    root = doc[:].root
+
+    # retrieve answers for questions like (WHO, has, PET)
     # here's one just for dogs
+    # you should really check the verb... this is just an example not the best way to do things
     if q_trip.subject.lower() == 'who' and q_trip.object == 'dog':
+
         answer = '{} has a {} named {}.'
 
         for person in persons:
             pet = get_persons_pet(person.name)
             if pet and pet.type == 'dog':
                 print(answer.format(person.name, 'dog', pet.name))
+
+    # retrieve answers for questions like (WHO, like, PERSON)
+    # again this is just an example, NOT the best way to do things. That's for you to figure out.
+    elif q_trip.subject.lower() == 'who' and root.lemma_ == 'like' and q_trip.object in [e.text for e in doc.ents if e.label_ == 'PERSON' or e.label_ == 'ORG']:
+        answer = '{} likes {}'
+
+        liked_person = select_person(q_trip.object)
+
+        for person in persons:
+            if person.name != q_trip.object and liked_person in person.likes:
+                print(answer.format(person.name, liked_person.name))
+
+
+def process_data_from_input_file(path='assignment_01.data'):
+    sents = get_data_from_file(path)
+
+    triples = cl.extract_triples(sents)
+
+    for t in triples:
+        try:
+            process_relation_triplet(t)
+        except Exception as e:
+            print("""There was an error when processing following triplet in the data file: {}\nSENT: {}\nERROR: {}\n\n""".format(t, sents[int(t.index)], e))
+
+
+
+def main():
+    process_data_from_input_file()
+    answer_question()
 
 
 if __name__ == '__main__':
